@@ -1,29 +1,29 @@
 :root {
   font-family: 'Poppins', sans-serif;
-  color-scheme: dark;
-  color: #ffffff;
-  background-color: #270916;
+  color-scheme: light;
+  color: #0f172a;
+  background-color: #ffffff;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  /* Visible Rich Red Wine / Bordeaux Theme Palette */
-  --bg: #270916;
-  --bg-darker: #1e0510;
-  --bg-card: #3a1124;
-  --bg-card-hover: #48162d;
+  /* Clean Modern Light / White Theme Palette */
+  --bg: #ffffff;
+  --bg-darker: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-card-hover: #ffffff;
   
-  --cyan: #ff2a5f;
-  --cyan-glow: rgba(255, 42, 95, 0.45);
-  --wine-deep: #c9184a;
-  --blue: #ff2a5f;
+  --cyan: #e11d48;
+  --cyan-glow: rgba(225, 29, 72, 0.22);
+  --wine-deep: #be123c;
+  --blue: #e11d48;
 
-  --text-main: #ffffff;
-  --text-sub: #f3d8e0;
-  --text-muted: #d09ea9;
+  --text-main: #0f172a;
+  --text-sub: #334155;
+  --text-muted: #64748b;
 
-  --border: rgba(255, 42, 95, 0.28);
+  --border: #e2e8f0;
 }
 
 * {
@@ -66,25 +66,25 @@ input, textarea, button {
   font-family: inherit;
 }
 
-/* Custom Red Wine Scrollbar */
+/* Custom Light Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1e0510;
+  background: #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #ff2a5f;
+  background: #cbd5e1;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #e6194b;
+  background: #94a3b8;
 }
 
 ::selection {
-  background: #ff2a5f;
-  color: #ffffff;
+  background: rgba(225, 29, 72, 0.15);
+  color: #0f172a;
 }
