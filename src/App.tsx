@@ -1,39 +1,61 @@
 import { useState, useEffect } from 'react'
 import {
-  Linkedin, Mail, Github, Menu, X,
-  Code2, Database, Layers, Check, Send, Award, Trophy, GraduationCap
+  Linkedin, Mail, Github, Menu, X, MapPin,
+  Check, Send, Award, Trophy
 } from 'lucide-react'
 import './App.css'
 
+// Exact details from Resume
+const name = 'Aditya Diwan'
+const location = 'Surat, Gujarat'
+const phone = '8320437612'
 const email = 'aditya.diwan04@gmail.com'
+const linkedin = 'http://www.linkedin.com/in/aditya-diwan-2b0776200'
 const github = 'https://github.com/Aditya-Diwan'
-const linkedin = 'https://www.linkedin.com/in/aditya-diwan-2b0776200'
 
-// WhatsApp configuration (User can supply their exact number)
-const whatsappNumber = '+919999999999'
-const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=Hi%20Aditya,%20I%20saw%20your%20portfolio%20and%20would%20like%20to%20connect!`
+// WhatsApp URL with verified phone number from resume (only used in WhatsApp logo)
+const whatsappUrl = `https://wa.me/91${phone}?text=Hi%20Aditya,%20I%20saw%20your%20portfolio%20and%20would%20like%20to%20connect!`
 
+// Previous roles kept intact + SQL Developer added (rotating every 3-4 seconds)
 const roles = [
   'Full Stack Developer',
+  'SQL Developer',
   'ASP.NET Core Developer',
-  'C# Specialist',
   'Backend Engineer'
 ]
 
-const skillsList = [
-  { name: 'C#', category: 'Backend' },
-  { name: 'ASP.NET Core MVC', category: 'Backend' },
-  { name: 'ASP.NET MVC', category: 'Backend' },
-  { name: 'Entity Framework Core', category: 'ORM' },
-  { name: 'SQL Server', category: 'Database' },
-  { name: 'JavaScript', category: 'Frontend' },
-  { name: 'TypeScript', category: 'Frontend' },
-  { name: 'React', category: 'Frontend' },
-  { name: 'HTML5', category: 'Frontend' },
-  { name: 'CSS3', category: 'Frontend' },
-  { name: 'RESTful APIs', category: 'Architecture' },
-  { name: 'Git & GitHub', category: 'Tools' },
+// C# & .NET Development Skills (Shows First)
+const csharpSkills = [
+  'C#',
+  'ASP.NET Core MVC',
+  'ASP.NET MVC',
+  'Entity Framework Core',
+  'HTML & CSS',
+  'JavaScript'
 ]
+
+// Database & SQL Skills (Shows Second)
+const databaseSkills = [
+  'Microsoft SQL Server (MSSQL)',
+  'SQL Server Management Studio (SSMS)',
+  'Basic & Advanced SQL',
+  'Stored Procedures & T-SQL',
+  'Database Management',
+  'Query Optimization'
+]
+
+// Exact Official WhatsApp SVG Icon
+const WhatsAppIcon = ({ size = 20 }: { size?: number }) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={size}
+    height={size}
+    fill="currentColor"
+    style={{ display: 'inline-block', verticalAlign: 'middle' }}
+  >
+    <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.38c0-4.54 3.7-8.25 8.24-8.25M8.53 7.33c-.16 0-.42.06-.64.3-.23.25-.87.85-.87 2.07s.89 2.4 1.01 2.56c.12.17 1.75 2.67 4.24 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.1-.22-.16-.47-.28-.25-.13-1.47-.73-1.7-.82-.23-.09-.39-.13-.56.12-.17.25-.65.82-.8.98-.15.16-.29.18-.54.06-.25-.13-1.05-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.15-.25-.01-.39.11-.51.11-.11.25-.29.37-.43.12-.15.17-.25.25-.42.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43z" />
+  </svg>
+)
 
 export function App() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -49,17 +71,17 @@ export function App() {
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [formSubmitted, setFormSubmitted] = useState(false)
 
-  // Typewriter effect logic
+  // Typewriter effect logic (rotates every 3-4 seconds)
   useEffect(() => {
     const currentRole = roles[roleIndex]
-    const typingSpeed = isDeleting ? 40 : 100
+    const typingSpeed = isDeleting ? 40 : 90
 
     const timeout = setTimeout(() => {
       if (!isDeleting) {
         setTypedText(currentRole.substring(0, charIndex + 1))
         setCharIndex((prev) => prev + 1)
         if (charIndex + 1 === currentRole.length) {
-          setTimeout(() => setIsDeleting(true), 1500)
+          setTimeout(() => setIsDeleting(true), 3500)
         }
       } else {
         setTypedText(currentRole.substring(0, charIndex - 1))
@@ -151,189 +173,256 @@ export function App() {
         </div>
       )}
 
-      {/* 1. HOME / LANDING SECTION */}
+      {/* 1. HOME / LANDING SECTION (No social links here - purely in Contact section) */}
       <section className="home" id="home">
         <div className="home-content">
           <div className="home-text">
             <h3>Hello, It's Me!</h3>
-            <h1>Aditya Diwan</h1>
+            <h1>{name}</h1>
             <h3>
               And I'm a <span className="typed-text">{typedText}</span>
               <span className="cursor">|</span>
             </h3>
 
+            {/* Dedicated Database & SQL Developer Summary */}
             <p>
-              I'm a Full Stack Developer specializing in C#, ASP.NET Core MVC, and Microsoft SQL Server. Dedicated to building reliable, scalable web applications and crafting clean, maintainable software solutions.
+              Computer Engineering graduate from CVM with hands-on experience in Database Management, SQL Querying, and Full Stack Web Development. Proficient in Microsoft SQL Server, Basic &amp; Advanced SQL, ASP.NET MVC, C#, HTML, and CSS.
             </p>
 
-            {/* Circular Glowing Social Icons */}
-            <div className="home-sci">
-              <a href={linkedin} target="_blank" rel="noreferrer" title="LinkedIn">
-                <Linkedin size={20} />
-              </a>
-              <a href={`mailto:${email}`} title="Email">
-                <Mail size={20} />
-              </a>
-              <a href={github} target="_blank" rel="noreferrer" title="GitHub">
-                <Github size={20} />
-              </a>
-              <a href={whatsappUrl} target="_blank" rel="noreferrer" title="WhatsApp">
-                <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-                  <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.592 2.654-.697c.969.529 1.777.818 2.806.818 3.18 0 5.767-2.587 5.767-5.766.001-3.182-2.585-5.768-5.767-5.768zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.06-2.025-.494-1.623-.676-2.657-2.339-2.737-2.447-.079-.109-.646-.86-.646-1.637 0-.776.406-1.159.55-1.317.144-.159.314-.199.418-.199.105 0 .21.002.302.007.098.005.228-.037.357.273.131.317.447 1.092.486 1.171.04.079.066.172.013.277-.052.106-.079.172-.158.264-.079.092-.165.206-.236.277-.079.079-.161.165-.069.324.092.158.409.675.877 1.091.603.536 1.11.702 1.268.781.158.079.25.066.342-.04.092-.105.394-.461.499-.619.106-.158.21-.132.355-.079.145.053.918.434 1.076.513.158.079.263.118.302.184.04.066.04.382-.104.787zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.662 1.435 5.179L2 22l4.957-1.3c1.472.82 3.161 1.3 4.975 1.3 5.523 0 10-4.477 10-10S17.523 2 12 2z"/>
-                </svg>
-              </a>
-            </div>
-
-            {/* Glowing CTA Buttons */}
+            {/* Clean CTA Buttons: Reassigned to About Me & Direct Resume Download */}
             <div className="home-btn-group">
-              <a href="#about" className="btn-box">More About Me</a>
-              <a href={github} target="_blank" rel="noreferrer" className="btn-box download-resume">
+              <a href="#about" className="btn-box">About Me</a>
+              <a
+                href="/Aditya_Diwan_Resume.pdf"
+                download="Aditya_Diwan_Resume.pdf"
+                className="btn-box download-resume"
+                title="Download Aditya Diwan's Resume"
+              >
                 Download Resume
               </a>
             </div>
           </div>
 
-          {/* Right Column: Authentic 3D Blue Logo in Glow Frame */}
+          {/* Right Column: Developer Snapshot & Quick Highlights Card */}
           <div className="home-photo">
-            <div className="photo-glow-circle">
-              <img src="/logo.png" alt="Aditya Diwan" className="hero-logo-img" />
+            <div className="dev-snapshot-card">
+              <div className="snapshot-header">
+                <div className="status-indicator">
+                  <span className="pulse-dot" />
+                  <span className="status-text">Available for Opportunities</span>
+                </div>
+                <span className="location-chip">Surat, Gujarat</span>
+              </div>
+
+              <div className="snapshot-stat-grid">
+                <div className="stat-card">
+                  <span className="stat-value">8.01</span>
+                  <span className="stat-label">B.Tech CGPA</span>
+                </div>
+                <div className="stat-card">
+                  <span className="stat-value">1st Prize</span>
+                  <span className="stat-label">Project Winner</span>
+                </div>
+                <div className="stat-card">
+                  <span className="stat-value">Top 55</span>
+                  <span className="stat-label">SVNIT Hackathon</span>
+                </div>
+                <div className="stat-card">
+                  <span className="stat-value">Intern</span>
+                  <span className="stat-label">SSM InfoTech</span>
+                </div>
+              </div>
+
+              <div className="snapshot-focus-box">
+                <div className="focus-header">Core Expertise</div>
+                <div className="focus-tags">
+                  <span className="focus-tag">C#</span>
+                  <span className="focus-tag">ASP.NET MVC Core</span>
+                  <span className="focus-tag">SSMS</span>
+                  <span className="focus-tag">MSSQL</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 2. ABOUT ME SECTION */}
+      {/* 2. ABOUT ME SECTION (Clean Layout with Location Arranged beside Contact Me) */}
       <section className="about" id="about">
         <div className="about-img">
-          <div className="about-logo-frame">
-            <img src="/logo.png" alt="Aditya Diwan Logo" className="about-logo" />
+          <div className="about-photo-card">
+            <div className="about-photo-glow-border">
+              <img
+                src="/aditya.jpg"
+                alt="Aditya Diwan"
+                className="about-portrait-img"
+              />
+            </div>
+            <div className="about-photo-badge">
+              <span className="photo-badge-name">Aditya Diwan</span>
+              <span className="photo-badge-role">Full Stack &amp; SQL Developer</span>
+              <span className="photo-badge-loc">
+                <MapPin size={13} /> {location}
+              </span>
+            </div>
           </div>
         </div>
         <div className="about-text">
           <h2>About <span>Me</span></h2>
-          <h4>Full Stack Developer ...</h4>
+          <h4>Full Stack &amp; SQL Developer</h4>
           <p>
-            Hello, I'm Aditya Diwan, a dedicated Full Stack Developer specializing in the .NET ecosystem. I build end-to-end web applications with clean architecture, robust relational databases, and responsive user interfaces.
+            Computer Engineering graduate from CVM with hands-on experience in Database Management, Full Stack Web Development, and IoT. Proficient in Microsoft SQL Server, Basic &amp; Advanced SQL, ASP.NET MVC, HTML, CSS, and C#.
           </p>
           <p>
-            I have industry experience as a Full Stack Developer Intern at SSM InfoTech Solution Pvt. Ltd. (Surat), developing modules using ASP.NET Core MVC, C#, SQL Server, and JavaScript. My achievements include securing First Prize in the Final Year Diploma Mini Project and being recognized in the Top 55 out of 1,200+ participants at the national Mindbend '25 Hackathon at SVNIT.
+            Gained practical industry experience at SSM InfoTech Solution Pvt. Ltd. (Surat) writing and optimizing complex SQL queries, managing database operations, enhancing data retrieval performance, and completing an intensive Summer Internship focused on Basic and Advanced SQL.
           </p>
           <div className="about-btn-row">
             <a href="#contact" className="btn-box">Contact Me</a>
+            <div className="about-location-pill">
+              <MapPin size={15} /> <span>{location}</span>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 3. EXPERIENCE SECTION */}
+      {/* 3. WORK EXPERIENCE SECTION */}
       <section className="timeline" id="experience">
-        <h1 className="sub-title"><span>Experience </span>Timeline</h1>
+        <h1 className="sub-title"><span>Work </span>Experience</h1>
         <div className="timeline-container">
+          {/* Work Experience from Resume */}
           <div className="timeline-item">
             <div className="timeline-dot" />
-            <div className="timeline-date">Jan 2026 — Apr 2026</div>
+            <div className="timeline-date">1 Jan 2026 — 30 April 2026</div>
             <div className="timeline-content">
-              <h3>Full Stack Developer Intern @ SSM InfoTech Solution Pvt. Ltd.</h3>
-              <p>
-                Developed and maintained enterprise web applications using ASP.NET Core MVC, C#, SQL Server, HTML5, CSS3, and JavaScript. Built full CRUD pipelines, integrated Entity Framework Core, and optimized SQL queries for maximum throughput.
-              </p>
+              <h3>Full Stack Developer Intern (ASP.NET Core MVC)</h3>
+              <h4 className="exp-company-sub">SSM InfoTech Solution Pvt. Ltd. • Surat, Gujarat</h4>
+              <ul className="exp-bullet-list">
+                <li>Developed and maintained web applications using ASP.NET Core MVC, C#, SQL Server, HTML, CSS, JavaScript.</li>
+                <li>Implemented CRUD operations, database integration, and responsive user interfaces, improving application functionality and user experience.</li>
+                <li>Wrote and optimized SQL queries, managed database operations, and enhanced data retrieval performance for business applications.</li>
+              </ul>
             </div>
           </div>
 
+          {/* Summer Internship from Certificate */}
           <div className="timeline-item">
             <div className="timeline-dot" />
-            <div className="timeline-date">2024 — Present</div>
+            <div className="timeline-date">May 28, 2025 — June 11, 2025</div>
             <div className="timeline-content">
-              <h3>Full Stack Project Development &amp; Competitive Hackathons</h3>
+              <h3>Summer Internship on Basic and Advance SQL</h3>
+              <h4 className="exp-company-sub">SSM Learning Excellence Centre (Powered By: SSM InfoTech Solutions Pvt. Ltd.) • Surat, Gujarat</h4>
               <p>
-                Architected production-ready platforms including Elite Cars (Car Rental Management) and TuneSync (Music Web App). Competed at SVNIT Mindbend '25 Hackathon, finishing in the Top 55 among 1,200+ participants nationwide.
+                Successfully accomplished summer internship on Basic and Advance SQL, mastering query optimization, database design, stored procedures, and relational data management.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 4. SEPARATE EDUCATION SECTION */}
+      {/* 4. EDUCATION SECTION (Degree in BIG font, College name in NORMAL readable font, City mentioned clearly) */}
       <section className="timeline education-section" id="education">
-        <h1 className="sub-title"><span>Educational </span>Journey</h1>
+        <h1 className="sub-title"><span>My </span>Education</h1>
         <div className="timeline-container">
+          {/* B.Tech */}
           <div className="timeline-item">
             <div className="timeline-dot" />
-            <div className="timeline-date">2023 — 2026</div>
-            <div className="timeline-content">
-              <h3>B.Tech — Computer Engineering @ MBIT</h3>
-              <p>
-                Madhuben and Bhanubhai Patel Institute of Technology • <strong>CGPA: 8.01 / 10</strong>. Rigorous study in Database Management Systems (DBMS), Advanced OOP with C#/.NET, Computer Networks, and Software Engineering.
-              </p>
+            <div className="timeline-content edu-clean-card">
+              <h2 className="edu-degree-big">Bachelor's Degree in Technology — Computer Engineering</h2>
+              <h3 className="edu-college-name">Madhuben and Bhanubhai Patel Institute of technology (MBIT)</h3>
+              <p className="edu-city-location"><MapPin size={14} /> Anand, Gujarat</p>
+              <div className="edu-meta-row">
+                <span className="edu-year-tag">2026</span>
+                <span className="edu-score-pill">CGPA: 8.01</span>
+              </div>
             </div>
           </div>
 
+          {/* Diploma */}
           <div className="timeline-item">
             <div className="timeline-dot" />
-            <div className="timeline-date">2020 — 2023</div>
-            <div className="timeline-content">
-              <h3>Diploma — Information Technology @ Tapi Diploma Engineering College</h3>
-              <p>
-                Tapi Diploma Engineering College, Surat • <strong>CGPA: 7.76 / 10</strong>. Foundation in software engineering, C/C++ programming, relational databases, and web development. Awarded First Prize in the Final Year Mini Project.
-              </p>
+            <div className="timeline-content edu-clean-card">
+              <h2 className="edu-degree-big">Diploma in Information Technology</h2>
+              <h3 className="edu-college-name">Tapi Diploma Engineering College</h3>
+              <p className="edu-city-location"><MapPin size={14} /> Surat, Gujarat</p>
+              <div className="edu-meta-row">
+                <span className="edu-year-tag">2023</span>
+                <span className="edu-score-pill">CGPA: 7.76</span>
+              </div>
             </div>
           </div>
 
+          {/* SSC */}
           <div className="timeline-item">
             <div className="timeline-dot" />
-            <div className="timeline-date">2020</div>
-            <div className="timeline-content">
-              <h3>SSC — Secondary School Certificate @ Smt. I. N. Tekrawala High School</h3>
-              <p>
-                Gujarat Secondary and Higher Secondary Education Board (GSEB), Surat • <strong>67%</strong>. Built analytical, mathematical, and problem-solving foundations.
-              </p>
+            <div className="timeline-content edu-clean-card">
+              <h2 className="edu-degree-big">SSC — GSEB</h2>
+              <h3 className="edu-college-name">Smt. I. N. Tekrawala High School</h3>
+              <p className="edu-city-location"><MapPin size={14} /> Surat, Gujarat</p>
+              <div className="edu-meta-row">
+                <span className="edu-year-tag">2020</span>
+                <span className="edu-score-pill">Percentage: 67%</span>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 5. SKILLS SECTION */}
+      {/* 5. SKILLS SECTION (C# Section First, then Database Section) */}
       <section className="skills-section" id="skills">
         <h1 className="sub-title">My <span>Skills</span></h1>
-        <div className="container">
-          <div className="skills-container">
-            {skillsList.map((skill) => (
-              <div className="skill" key={skill.name}>
-                <div className="skill-icon">
-                  {skill.name.includes('SQL') || skill.name.includes('Framework') ? (
-                    <Database size={32} />
-                  ) : skill.name.includes('APIs') || skill.name.includes('Git') ? (
-                    <Layers size={32} />
-                  ) : (
-                    <Code2 size={32} />
-                  )}
+        
+        <div className="skills-category-group">
+          {/* C# Section First */}
+          <div className="skill-category-block">
+            <h3 className="skill-category-title">C# &amp; .NET Development</h3>
+            <div className="skills-badges-wrapper">
+              {csharpSkills.map((skill) => (
+                <div className="skill-badge" key={skill}>
+                  {skill}
                 </div>
-                <div className="skill-name">{skill.name}</div>
-              </div>
-            ))}
+              ))}
+            </div>
+          </div>
+
+          {/* Database Section Second */}
+          <div className="skill-category-block">
+            <h3 className="skill-category-title">Database &amp; SQL</h3>
+            <div className="skills-badges-wrapper">
+              {databaseSkills.map((skill) => (
+                <div className="skill-badge" key={skill}>
+                  {skill}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 6. PROJECTS SECTION */}
+      {/* 6. PROJECTS SECTION (Word for Word from Resume) */}
       <section className="projects" id="projects">
         <h1 className="sub-title"><span>My </span>Projects</h1>
         <div className="projects-container">
-          {/* Project 1 */}
+          {/* 1st Project: Elite cars */}
           <div className="project">
             <div className="project-info">
-              <h3>1. Elite Cars — Car Rental Management System</h3>
-              <p>
-                A full-stack car rental platform featuring vehicle fleet management, role-based access control for Admins and Customers, real-time availability tracking, and integrated Stripe payment processing.
-              </p>
-              <div className="project-tags">
-                <span>ASP.NET Core MVC</span>
-                <span>EF Core</span>
-                <span>SQL Server</span>
-                <span>Stripe API</span>
+              <h3>Elite cars (Car Rental Management System | ASP.NET Core MVC)</h3>
+              <ul className="project-bullet-list">
+                <li>Built a Car Rental Management System using ASP.NET Core MVC, EF Core, and SQL Server.</li>
+                <li>Implemented role-based authentication, vehicle booking, and rental management features.</li>
+                <li>Integrated Stripe Payment Gateway for secure online payments and transaction processing.</li>
+              </ul>
+              <div className="project-tech-section">
+                <span className="project-tech-label">Technologies Used:</span>
+                <div className="project-tags">
+                  <span>ASP.NET Core MVC</span>
+                  <span>EF Core</span>
+                  <span>SQL Server</span>
+                  <span>Stripe API</span>
+                </div>
               </div>
               <div className="project-links">
                 <a
-                  href={`${github}?tab=repositories`}
+                  href="https://github.com/Aditya-Diwan/CarRentaleSystem"
                   target="_blank"
                   rel="noreferrer"
                   className="btn-box"
@@ -344,22 +433,27 @@ export function App() {
             </div>
           </div>
 
-          {/* Project 2 */}
+          {/* 2nd Project: TuneSync */}
           <div className="project">
             <div className="project-info">
-              <h3>2. TuneSync — Music Streaming Web Application</h3>
-              <p>
-                A comprehensive music web application built with distinct experiences for listeners, artists, and administrators. Includes protected routes, playlist management, and normalized SQL Server audio libraries.
-              </p>
-              <div className="project-tags">
-                <span>ASP.NET MVC</span>
-                <span>C# .NET</span>
-                <span>SQL Server</span>
-                <span>JavaScript</span>
+              <h3>TuneSync (Music Web App | ASP.NET MVC)</h3>
+              <ul className="project-bullet-list">
+                <li>Developed a full-stack music streaming platform featuring separate Admin, Artist, and User panels.</li>
+                <li>Implemented role-based authentication and authorization to provide secure access for different user roles.</li>
+                <li>Built core functionalities including song management, playlist creation, and database integration for efficient data handling.</li>
+              </ul>
+              <div className="project-tech-section">
+                <span className="project-tech-label">Technologies Used:</span>
+                <div className="project-tags">
+                  <span>ASP.NET MVC</span>
+                  <span>C#</span>
+                  <span>SQL Server</span>
+                  <span>JavaScript</span>
+                </div>
               </div>
               <div className="project-links">
                 <a
-                  href={`${github}?tab=repositories`}
+                  href="https://github.com/Aditya-Diwan/MusicWeb"
                   target="_blank"
                   rel="noreferrer"
                   className="btn-box"
@@ -372,18 +466,18 @@ export function App() {
         </div>
       </section>
 
-      {/* 7. KEY ACHIEVEMENTS SECTION (Directly above Contact) */}
+      {/* 7. CERTIFICATIONS & AWARDS (Directly from Resume, above Contact) */}
       <section className="achievements" id="achievements">
-        <h1 className="sub-title">Key <span>Achievements</span></h1>
+        <h1 className="sub-title">Certifications &amp; <span>Awards</span></h1>
         <div className="achievements-container">
           <div className="achievement-box">
             <div className="ach-icon-circle">
               <Award size={32} />
             </div>
-            <h3>1st Prize Winner — Mini Project</h3>
-            <h4>Final Year Diploma Engineering Exhibition</h4>
+            <h3>First Prize Winner</h3>
+            <h4>Final Year Diploma Mini Project</h4>
             <p>
-              Secured First Place for developing and presenting an outstanding software application solving real practical workflows, evaluated by departmental faculty and judges.
+              Awarded First Prize for developing and executing an exceptional project in the Final Year Diploma Engineering Exhibition.
             </p>
           </div>
 
@@ -391,34 +485,23 @@ export function App() {
             <div className="ach-icon-circle">
               <Trophy size={32} />
             </div>
-            <h3>Top 55 Finalist — Mindbend '25</h3>
-            <h4>National Hackathon @ SVNIT, Surat</h4>
+            <h3>Top 55 Finalist</h3>
+            <h4>Mindbend '25 Hackathon @ SVNIT</h4>
             <p>
-              Selected among the top 55 teams out of 1,200+ participants from engineering colleges across India, executing an innovative project under tight hackathon constraints.
-            </p>
-          </div>
-
-          <div className="achievement-box">
-            <div className="ach-icon-circle">
-              <GraduationCap size={32} />
-            </div>
-            <h3>Academic Distinction — 8.01 CGPA</h3>
-            <h4>B.Tech in Computer Engineering @ MBIT</h4>
-            <p>
-              Maintained consistent academic distinction across semesters with an aggregate 8.01 CGPA, combining engineering theory with practical software development.
+              Selected in top 55 from 1,200+ participants at the national hackathon hosted by Sardar Vallabhbhai National Institute of Technology (SVNIT), Surat.
             </p>
           </div>
         </div>
       </section>
 
-      {/* 8. CONTACT SECTION */}
+      {/* 8. CONTACT SECTION (All links are exclusively showcased here!) */}
       <section className="contact" id="contact">
         <div className="container">
           <div className="contact-content">
             <h2>Contact <span>Me !</span></h2>
             <p className="contact-sub">Let's work together!</p>
 
-            {/* Glowing Social Circles */}
+            {/* Glowing Social Circles - Exclusively in Contact section */}
             <div className="social-icons">
               <a href={linkedin} target="_blank" rel="noreferrer" title="LinkedIn">
                 <Linkedin size={22} />
@@ -430,11 +513,13 @@ export function App() {
                 <Github size={22} />
               </a>
               <a href={whatsappUrl} target="_blank" rel="noreferrer" title="WhatsApp">
-                <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
-                  <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.592 2.654-.697c.969.529 1.777.818 2.806.818 3.18 0 5.767-2.587 5.767-5.766.001-3.182-2.585-5.768-5.767-5.768zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.06-2.025-.494-1.623-.676-2.657-2.339-2.737-2.447-.079-.109-.646-.86-.646-1.637 0-.776.406-1.159.55-1.317.144-.159.314-.199.418-.199.105 0 .21.002.302.007.098.005.228-.037.357.273.131.317.447 1.092.486 1.171.04.079.066.172.013.277-.052.106-.079.172-.158.264-.079.092-.165.206-.236.277-.079.079-.161.165-.069.324.092.158.409.675.877 1.091.603.536 1.11.702 1.268.781.158.079.25.066.342-.04.092-.105.394-.461.499-.619.106-.158.21-.132.355-.079.145.053.918.434 1.076.513.158.079.263.118.302.184.04.066.04.382-.104.787zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.662 1.435 5.179L2 22l4.957-1.3c1.472.82 3.161 1.3 4.975 1.3 5.523 0 10-4.477 10-10S17.523 2 12 2z"/>
-                </svg>
+                <WhatsAppIcon size={22} />
               </a>
             </div>
+
+            <p className="contact-location-direct">
+              <MapPin size={16} /> Location: <span>{location}</span>
+            </p>
 
             {/* Clean Direct Message Form */}
             <form onSubmit={handleSubmit} className="contact-form-clean">
@@ -479,7 +564,7 @@ export function App() {
 
       {/* FOOTER */}
       <div className="last-text">
-        <p>© Coding excellence at your service - developed by Aditya Diwan</p>
+        <p>© Coding excellence at your service - developed by {name}</p>
       </div>
     </div>
   )
