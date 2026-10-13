@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import {
   Linkedin, Mail, Github, Menu, X, MapPin,
-  Check, Send, Award, Trophy
+  Check, Send, Award, Trophy, Loader2, AlertCircle
 } from 'lucide-react'
+import emailjs from '@emailjs/browser'
 import './App.css'
 
 // Exact details from Resume
@@ -70,6 +71,8 @@ export function App() {
   // Contact form state
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [formSubmitted, setFormSubmitted] = useState(false)
+  const [isSending, setIsSending] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
   // Typewriter effect logic (rotates every 3-4 seconds)
   useEffect(() => {
@@ -118,14 +121,40 @@ export function App() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!form.name || !form.email || !form.message) return
-    setFormSubmitted(true)
-    setTimeout(() => {
-      setFormSubmitted(false)
+    if (!form.name || !form.email || !form.message || isSending) return
+
+    setIsSending(true)
+    setErrorMessage('')
+
+    try {
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_8mzttj8'
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_8pg2dos'
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'bVi-vMvqp0EW0oM96'
+
+      await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          name: form.name,
+          email: form.email,
+          message: form.message,
+        },
+        publicKey
+      )
+
+      setFormSubmitted(true)
       setForm({ name: '', email: '', message: '' })
-    }, 4000)
+      setTimeout(() => {
+        setFormSubmitted(false)
+      }, 5000)
+    } catch (error) {
+      console.error('EmailJS error:', error)
+      setErrorMessage('Failed to send message. Please try again or reach out directly.')
+    } finally {
+      setIsSending(false)
+    }
   }
 
   return (
@@ -260,7 +289,7 @@ export function App() {
             </div>
             <div className="about-photo-badge">
               <span className="photo-badge-name">Aditya Diwan</span>
-              <span className="photo-badge-role">Full Stack &amp; SQL Developer</span>
+              <span className="photo-badge-role">.NET Developer</span>
               <span className="photo-badge-loc">
                 <MapPin size={13} /> {location}
               </span>
@@ -269,12 +298,12 @@ export function App() {
         </div>
         <div className="about-text">
           <h2>About <span>Me</span></h2>
-          <h4>Full Stack &amp; SQL Developer</h4>
+          <h4>.NET Developer</h4>
           <p>
-            Computer Engineering graduate from CVM with hands-on experience in Database Management, Full Stack Web Development, and IoT. Proficient in Microsoft SQL Server, Basic &amp; Advanced SQL, ASP.NET MVC, HTML, CSS, and C#.
+            I am a passionate and dedicated .NET Developer with a strong foundation in C#, ASP.NET Core MVC, SQL Server, HTML, CSS, and JavaScript. I enjoy building user-friendly, responsive, and efficient web applications while continuously improving my technical skills.
           </p>
           <p>
-            Gained practical industry experience at SSM InfoTech Solution Pvt. Ltd. (Surat) writing and optimizing complex SQL queries, managing database operations, enhancing data retrieval performance, and completing an intensive Summer Internship focused on Basic and Advanced SQL.
+            As a motivated fresher, I am eager to learn new technologies, solve challenging problems, and contribute to innovative software solutions. I am looking for opportunities to grow professionally, collaborate with experienced developers, and apply my knowledge to real-world applications.
           </p>
           <div className="about-btn-row">
             <a href="#contact" className="btn-box">Contact Me</a>
@@ -530,12 +559,19 @@ export function App() {
                 </div>
               ) : (
                 <>
+                  {errorMessage && (
+                    <div className="form-error-badge">
+                      <AlertCircle size={18} />
+                      <span>{errorMessage}</span>
+                    </div>
+                  )}
                   <input
                     type="text"
                     required
                     placeholder="Enter Your Name"
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    disabled={isSending}
                   />
                   <input
                     type="email"
@@ -543,6 +579,7 @@ export function App() {
                     placeholder="Enter Your Email"
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    disabled={isSending}
                   />
                   <textarea
                     required
@@ -550,10 +587,20 @@ export function App() {
                     placeholder="Enter Your Message"
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
+                    disabled={isSending}
                   />
-                  <button type="submit" className="btn-box submit-btn">
-                    <span>Send Message</span>
-                    <Send size={16} />
+                  <button type="submit" className="btn-box submit-btn" disabled={isSending}>
+                    {isSending ? (
+                      <>
+                        <span>Sending...</span>
+                        <Loader2 size={16} className="btn-spinner" />
+                      </>
+                    ) : (
+                      <>
+                        <span>Send Message</span>
+                        <Send size={16} />
+                      </>
+                    )}
                   </button>
                 </>
               )}
@@ -564,7 +611,8 @@ export function App() {
 
       {/* FOOTER */}
       <div className="last-text">
-        <p>© Coding excellence at your service - developed by {name}</p>
+        <p className="footer-left">Designed &amp; Developed by Aditya Diwan.</p>
+        <p className="footer-right">© 2026 Aditya Diwan. All Rights Reserved.</p>
       </div>
     </div>
   )
